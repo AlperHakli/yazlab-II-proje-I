@@ -1,0 +1,20 @@
+
+planlanan proje klasör yapısı
+
+
+yazlab-II-proje-I/
+├── dispatcher/              API Gateway (TDD burada yapılacak)
+│   ├── tests/               Önce buradaki testler yazılacak!
+│   ├── app/                 Dispatcher kodları
+│   └── Dockerfile
+├── auth-service/            Oturum açma servisi
+│   ├── app/
+│   └── Dockerfile
+├── service-a/               1. Mikroservis (Örn: Product Service)
+│   ├── app/
+│   └── Dockerfile
+├── service-b/               2. Mikroservis (Örn: Order Service)
+│   ├── app/
+│   └── Dockerfile
+├── docker-compose.yml       Tüm sistemi ayağa kaldıran sihirli dosya
+└── README.md                Mermaid diyagramları burada olacak

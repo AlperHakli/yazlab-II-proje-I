@@ -1,0 +1,22 @@
+#Buradaki dosya python projelerinde genel olarak kullanılan isim versiyon açıklama bağımlılıklar
+#gibi bilgilerin yer aldığı dosyadır
+# yeni bağımlılık eklerken dependencies kısmına bağımlılığın ismini yazıp
+# örn "pytest" konsola uv pip install . diyerek ekleyebilirsin
+
+[project]
+name = "yazlab-II-proje-I"
+version = "0.1.0"
+description = "Yazlab 2 proje 1 dosyaları"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # test frameworkü
+    "pytest",
+
+    # ana backend frameworkümüz
+
+    "fastapi"
+
+
+
+]
