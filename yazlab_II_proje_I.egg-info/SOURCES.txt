@@ -3,7 +3,7 @@ dispatcher/__init__.py
 dispatcher/app/__init__.py
 dispatcher/app/main.py
 dispatcher/tests/__init__.py
-dispatcher/tests/test_main.py
+dispatcher/tests/test_auth.py
 yazlab_II_proje_I.egg-info/PKG-INFO
 yazlab_II_proje_I.egg-info/SOURCES.txt
 yazlab_II_proje_I.egg-info/dependency_links.txt

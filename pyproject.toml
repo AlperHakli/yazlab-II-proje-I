@@ -14,8 +14,10 @@ dependencies = [
     "pytest",
 
     # ana backend frameworkümüz
+    "fastapi",
 
-    "fastapi"
+    #fastapi.testcliend yani starlette.testclient için gerekli paket
+    "httpx"
 
 
 
