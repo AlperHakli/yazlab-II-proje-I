@@ -1,10 +1,22 @@
-from dispatcher.app.main import app
-from fastapi.testclient import TestClient
+import pytest
+from constants import PROTECTED_ENDPOINTS
 
-client = TestClient(app=app)
-
-def test_book_endpoint_without_auth():
-    response = client.get("/books")
-
+@pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
+def test_endpoints_require_auth(client, endpoint):
+    """
+    bu test verilen listedeki tüm endpointler yetkisiz erişimmi kontrol eder auth testi yapar
+    """
+    response = client.get(endpoint)
     assert response.status_code == 401
-    assert response.json() == {"detail": "Yetkisiz erişim"}
+    # Hocanın istediği o spesifik hata mesajı kontrolü
+    assert "yetkisiz erişim" in response.json()["detail"].lower()
+
+
+@pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
+def test_valid_auth_success(client , endpoint):
+    # Senaryo: Veritabanımızda olan geçerli bir token gönderiyoruz
+    headers = {"Authorization": "Bearer gecerli_token_123"}
+    response = client.get(endpoint, headers=headers)
+
+    # Beklenti: 200 OK
+    assert response.status_code == 200

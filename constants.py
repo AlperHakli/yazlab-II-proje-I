@@ -1,0 +1,1 @@
+PROTECTED_ENDPOINTS = ["/books", "/borrow"]
