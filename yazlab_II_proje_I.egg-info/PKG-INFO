@@ -7,3 +7,4 @@ Description-Content-Type: text/markdown
 Requires-Dist: pytest
 Requires-Dist: fastapi
 Requires-Dist: httpx
+Requires-Dist: respx

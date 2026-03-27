@@ -17,7 +17,10 @@ dependencies = [
     "fastapi",
 
     #fastapi.testcliend yani starlette.testclient için gerekli paket
-    "httpx"
+    "httpx",
+
+    #test için mikroservisi taklid edicek paket
+    "respx"
 
 
 
