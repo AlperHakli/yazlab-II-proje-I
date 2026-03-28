@@ -1,8 +1,7 @@
 from dispatcher.app.main import app
 import pytest
 from fastapi.testclient import TestClient
-from constants import PROTECTED_ENDPOINTS , BOOK_SERVICE_URL , BORROW_SERVICE_URL
-
+from envconfig_and_settings import Settings
 @pytest.fixture
 def client():
     """
@@ -15,14 +14,19 @@ def bookendpoint():
     """
     Sabit olan book url sini döndürür
     """
-    return  BOOK_SERVICE_URL
+    return  Settings.BOOK_SERVICE_URL
 
 @pytest.fixture
 def borrowendpoint():
     """
     Sabit olan borrow url sini döndürür
     """
-    return  BORROW_SERVICE_URL
+    return  Settings.BORROW_SERVICE_URL
+
+def returnservicesdict():
+    """
+    tüm servislerin içerdiği dict i döndürür
+    """
 
 
 
@@ -32,5 +36,5 @@ def secured_endpoint_list():
     """
     :return: constants dosyasından projected endpoints listesini döndürür amaç burada dependency injection yapmaktır yine
     """
-    return PROTECTED_ENDPOINTS
+    return Settings.PROTECTED_ENDPOINTS
 

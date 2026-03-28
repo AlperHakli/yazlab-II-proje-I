@@ -1,7 +1,9 @@
 import pytest
-from constants import PROTECTED_ENDPOINTS
+from envconfig_and_settings import Settings
 
-@pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
+
+#TEST A
+@pytest.mark.parametrize("endpoint", Settings.PROTECTED_ENDPOINTS)
 def test_endpoints_require_auth(client, endpoint):
     """
     bu test verilen listedeki tüm endpointler için daha dispatcher seviyesinde yetkisiz erişimmi kontrol eder auth testi yapar
@@ -13,8 +15,9 @@ def test_endpoints_require_auth(client, endpoint):
     assert "yetkisiz erişim" in response.json()["detail"].lower()
 
 
-@pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
-def test_valid_auth_success(client , endpoint):
+#TEST B
+@pytest.mark.parametrize("endpoint", Settings.PROTECTED_ENDPOINTS)
+def test_valid_auth_success(client, endpoint):
     """
     dispatcher seviyesinde geçerli bir token varmı kontrol eder token geçerliyse başarılı 200 döndürmesi gerekir
     """

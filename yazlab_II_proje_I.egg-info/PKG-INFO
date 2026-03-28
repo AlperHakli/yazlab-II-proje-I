@@ -8,3 +8,4 @@ Requires-Dist: pytest
 Requires-Dist: fastapi
 Requires-Dist: httpx
 Requires-Dist: respx
+Requires-Dist: dotenv
