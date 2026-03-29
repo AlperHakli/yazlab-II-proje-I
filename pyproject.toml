@@ -20,7 +20,10 @@ dependencies = [
     "httpx",
 
     #test için mikroservisi taklid edicek paket
-    "respx"
+    "respx",
+
+    #çevresel değişkenleri yüklemek için
+    "dotenv"
 
 
 

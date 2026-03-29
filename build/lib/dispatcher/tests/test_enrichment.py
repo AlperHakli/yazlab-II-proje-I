@@ -1,11 +1,10 @@
 import respx
 import httpx
-from envconfig_and_settings import Settings
+from constants import SERVICES
 import pytest
 
-@pytest.mark.parametrize("endpoint , target_url" , Settings.SERVICES.items())
+@pytest.mark.parametrize("endpoint" , "target_url" , SERVICES)
 @respx.mock
-
 def test_dispatcher_enriches_with_user_id(client , endpoint , target_url):
         """
         seneryo: kullanıcı geçerli token ile /books yada /borrow endpointlerine istek atar

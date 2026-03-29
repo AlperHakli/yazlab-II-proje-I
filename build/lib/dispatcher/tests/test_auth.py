@@ -1,10 +1,11 @@
 import pytest
 from constants import PROTECTED_ENDPOINTS
 
+#TEST A
 @pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
 def test_endpoints_require_auth(client, endpoint):
     """
-    bu test verilen listedeki tüm endpointler yetkisiz erişimmi kontrol eder auth testi yapar
+    bu test verilen listedeki tüm endpointler için daha dispatcher seviyesinde yetkisiz erişimmi kontrol eder auth testi yapar
     """
     # seneryo:
     response = client.get(endpoint)
@@ -12,9 +13,12 @@ def test_endpoints_require_auth(client, endpoint):
 
     assert "yetkisiz erişim" in response.json()["detail"].lower()
 
-
+#TEST B
 @pytest.mark.parametrize("endpoint" , PROTECTED_ENDPOINTS)
 def test_valid_auth_success(client , endpoint):
+    """
+    dispatcher seviyesinde geçerli bir token varmı kontrol eder token geçerliyse başarılı 200 döndürmesi gerekir
+    """
     # senaryo: Veritabanımızda olan geçerli bir token gönderiyoruz
     headers = {"Authorization": "Bearer gecerli_token_123"}
     response = client.get(endpoint, headers=headers)

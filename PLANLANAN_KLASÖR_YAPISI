@@ -10,11 +10,11 @@ yazlab-II-proje-I/
 ├── auth-service/            Oturum açma servisi
 │   ├── app/
 │   └── Dockerfile
-├── service-a/               1. Mikroservis (Örn: Product Service)
+├── service-a/               Mikroservis (Örn: Product Service)
 │   ├── app/
 │   └── Dockerfile
-├── service-b/               2. Mikroservis (Örn: Order Service)
+├── service-b/               Mikroservis (Örn: Order Service)
 │   ├── app/
 │   └── Dockerfile
-├── docker-compose.yml       Tüm sistemi ayağa kaldıran sihirli dosya
+├── docker-compose.yml       docker dosyası
 └── README.md                Mermaid diyagramları burada olacak
