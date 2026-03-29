@@ -9,6 +9,7 @@ class Settings():
     # çevresel değişkenler olarak gelen url ler
     BOOK_SERVICE_URL = os.getenv("BOOK_SERVICE_URL")
     BORROW_SERVICE_URL = os.getenv("BORROW_SERVICE_URL")
+    AUTH_SERCICE_URL = os.getenv("AUTH_SERVICE_URL")
 
     # dispatcher deki yetki korumalı endpointler
     PROTECTED_ENDPOINTS = ["/books", "/borrow"]

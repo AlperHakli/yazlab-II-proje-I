@@ -23,18 +23,4 @@ def borrowendpoint():
     """
     return  Settings.BORROW_SERVICE_URL
 
-def returnservicesdict():
-    """
-    tüm servislerin içerdiği dict i döndürür
-    """
-
-
-
-
-@pytest.fixture
-def secured_endpoint_list():
-    """
-    :return: constants dosyasından projected endpoints listesini döndürür amaç burada dependency injection yapmaktır yine
-    """
-    return Settings.PROTECTED_ENDPOINTS
 
