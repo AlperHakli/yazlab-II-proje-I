@@ -8,7 +8,6 @@ from fastapi import FastAPI, Depends, HTTPException
 
 app = FastAPI()
 
-app.get("/books/{rest_of_path}")
 
 
 @app.get("/books/{rest_of_path:path}")

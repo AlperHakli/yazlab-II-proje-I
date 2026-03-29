@@ -18,7 +18,14 @@ class DispatcherProxyService():
            :return:
            """
 
-        full_url = f"{base_url}/{rest_of_path}/"
+        base = base_url.rstrip("/")
+        path = rest_of_path.strip("/")
+
+
+        if path:
+            full_url = f"{base}/{path}"
+        else:
+            full_url = base
 
         try:
             data = await forward_request(target_url=full_url, user=user)
