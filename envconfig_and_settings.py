@@ -16,8 +16,8 @@ class Settings():
     # tüm servislerin listesi
     ALL_SERVICES = [BOOK_SERVICE_URL , BORROW_SERVICE_URL]
 
-    # tüm servislerin ilgili endpointlerle beraber tuple elemanları olan listesi
-    SERVICES = [
-        ("/books", BOOK_SERVICE_URL),
-        ("/borrow", BORROW_SERVICE_URL)
-    ]
+    # key olarak endpoint değer olarak url alan servis listesi
+    SERVICES = {
+        "/books": BOOK_SERVICE_URL ,
+        "/borrow": BORROW_SERVICE_URL,
+    }
