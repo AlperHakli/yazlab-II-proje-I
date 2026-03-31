@@ -5,6 +5,7 @@ Summary: Yazlab 2 proje 1 dosyaları
 Requires-Python: >=3.12
 Description-Content-Type: text/markdown
 Requires-Dist: pytest
+Requires-Dist: pytest-asyncio
 Requires-Dist: fastapi
 Requires-Dist: httpx
 Requires-Dist: respx
@@ -12,3 +13,4 @@ Requires-Dist: dotenv
 Requires-Dist: redis
 Requires-Dist: beanie
 Requires-Dist: motor
+Requires-Dist: mongomock-motor

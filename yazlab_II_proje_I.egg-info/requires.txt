@@ -1,4 +1,5 @@
 pytest
+pytest-asyncio
 fastapi
 httpx
 respx
@@ -6,3 +7,4 @@ dotenv
 redis
 beanie
 motor
+mongomock-motor

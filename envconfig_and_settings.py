@@ -22,4 +22,5 @@ class Settings():
     SERVICES = {
         "/books": BOOK_SERVICE_URL ,
         "/borrow": BORROW_SERVICE_URL,
+        "/auth": AUTH_SERCICE_URL,
     }

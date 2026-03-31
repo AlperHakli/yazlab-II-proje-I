@@ -13,6 +13,9 @@ dependencies = [
     # test frameworkü
     "pytest",
 
+    #asenkron testler için framework
+    "pytest-asyncio",
+
     # ana backend frameworkümüz
     "fastapi",
 
@@ -34,8 +37,11 @@ dependencies = [
     #mongodb asenkron sürücüsü kısaca veritabanı motoru
     "motor",
 
-
-
-
+    #mongodb için async mock yapabileceğim paket
+    "mongomock-motor"
 
 ]
+# asenkron testleri dekoratörle belirtmeden otomatik algılatan yapı
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

@@ -3,19 +3,9 @@ from beanie import init_beanie
 from services.auth_service.app.pydantic_models import UserModel
 from envconfig_and_settings import Settings
 
-
 async def init_db():
-
     client = AsyncIOMotorClient(Settings.MONGODB_URL)
 
-
-    db = client.get_default_database()
-
-
-    await init_beanie(
-        database=db,
-        document_models=[UserModel]
-    )
-    print("--- MongoDB Bağlantısı Başarıyla Kuruldu ---")
+    await init_beanie(database=client.auth_db , document_models=[UserModel])
 
 

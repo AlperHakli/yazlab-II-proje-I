@@ -7,12 +7,6 @@ from services.dispatcher.app.redis_client import redis_manager
 
 #auth katmanı
 
-MOCK_USERS_DB = {
-    "gecerli_token_123": {"id": "1", "name": "alper", "role": "admin"},
-    "baska_bir_token": {"id": "2", "name": "ayşe", "role": "user"}
-}
-
-
 
 def get_service_url(service_name: str):
     def _returner():

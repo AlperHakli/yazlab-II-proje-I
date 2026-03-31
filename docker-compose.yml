@@ -1,0 +1,95 @@
+
+services:
+  # nosql veritabanları
+  auth-db:
+    image: mongo:latest
+    container_name: auth-db
+    ports:
+      - "27017:27017"
+    restart: always
+
+  book-db:
+    image: mongo:latest
+    container_name: book-db
+    ports:
+      - "27018:27017" # dışarıdan 27018 ile bağlanıldı
+    restart: always
+
+  borrow-db:
+    image: mongo:latest
+    container_name: borrow-db
+    ports:
+      - "27019:27017" # dışarıdan 27019 ile bağlanıldı
+    restart: always
+
+  # redis veritabanı
+  redis-cache:
+    image: redis:alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # mikroservisler
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth_service/Dockerfile
+    container_name: auth-service
+    ports:
+      - "8002:8002"
+    environment:
+      - PYTHONPATH=/app
+      - MONGODB_URL=${AUTH_MONGODB_URL}
+      - REDIS_HOST=redis-cache # Docker içi isim
+      - REDIS_PORT=6379
+    depends_on:
+      - auth-db
+      - redis-cache
+
+  book-service:
+    build:
+      context: .
+      dockerfile: services/book_service/Dockerfile
+    container_name: book-service
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONPATH=/app
+      - MONGODB_URL=${BOOK_MONGODB_URL}
+    depends_on:
+      - book-db
+
+  borrow-service:
+    build:
+      context: .
+      dockerfile: services/borrow_service/Dockerfile
+    container_name: borrow-service
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - MONGODB_URL=${BORROW_MONGODB_URL}
+    depends_on:
+      - borrow-db
+
+  # Dıspatcher
+  dispatcher:
+    build:
+      context: .
+      dockerfile: services/dispatcher/Dockerfile
+    container_name: dispatcher
+    ports:
+      - "8003:8003"
+    environment:
+      - PYTHONPATH=/app
+      - BOOK_SERVICE_URL=http://book-service:8001
+      - BORROW_SERVICE_URL=http://borrow-service:8000
+      - AUTH_SERVICE_URL=http://auth-service:8002
+      - REDIS_HOST=redis-cache
+      - REDIS_PORT=6379
+    depends_on:
+      - auth-service
+      - book-service
+      - borrow-service
+      - redis-cache

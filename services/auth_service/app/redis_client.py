@@ -1,5 +1,4 @@
 import redis.asyncio as redis
-import os
 from envconfig_and_settings import Settings
 
 

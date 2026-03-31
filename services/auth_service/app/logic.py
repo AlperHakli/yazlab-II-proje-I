@@ -1,7 +1,7 @@
 from services.auth_service.app.pydantic_models import LoginRequest, SignUpRequest
 from fastapi import HTTPException, status
 from services.auth_service.app.redis_client import redis_manager
-from pydantic_models import UserModel
+from services.auth_service.app.pydantic_models import UserModel
 import uuid
 
 
