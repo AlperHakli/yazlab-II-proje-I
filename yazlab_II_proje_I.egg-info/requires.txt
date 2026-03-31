@@ -3,3 +3,6 @@ fastapi
 httpx
 respx
 dotenv
+redis
+beanie
+motor

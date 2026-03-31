@@ -1,4 +1,4 @@
-from dispatcher.app.main import app
+from services.dispatcher.app.main import app
 import pytest
 from fastapi.testclient import TestClient
 from constants import PROTECTED_ENDPOINTS , BOOK_SERVICE_URL , BORROW_SERVICE_URL

@@ -2,7 +2,7 @@ from logic import verify_token , forward_request
 
 from fastapi import FastAPI , Depends
 
-# app ana dispatcher (proxy de denir)
+# services ana dispatcher (proxy de denir)
 
 app = FastAPI()
 
