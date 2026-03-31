@@ -23,7 +23,18 @@ dependencies = [
     "respx",
 
     #çevresel değişkenleri yüklemek için
-    "dotenv"
+    "dotenv",
+
+    #ram de tutulan hızlı veritabanı kütüphanesi
+    "redis",
+
+    #mongodb için object document mapper
+    "beanie",
+
+    #mongodb asenkron sürücüsü kısaca veritabanı motoru
+    "motor",
+
+
 
 
 

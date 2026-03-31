@@ -1,0 +1,32 @@
+import redis.asyncio as redis
+import os
+from envconfig_and_settings import Settings
+
+
+class RedisManager():
+    def __init__(self, redis_port: int, redis_host: str):
+        self.redis_port = redis_port
+        self.redis_host = redis_host
+        self.redis_client= None
+
+    async def connect(self):
+        self.redis_client = redis.Redis(
+            host=self.redis_host,
+            port=self.redis_port,
+            decode_responses=True
+        )
+
+    async def setToken(self, token: str, user_id: str, exp_duration: int = 3600):
+        await self.redis_client.set(name=token, value=user_id, ex=exp_duration)
+
+    async def getUserID(self, token: str):
+        """Token karşılığındaki user_id'yi getirir (Dispatcher kullanacak)."""
+        return await self.redis_client.get(token)
+
+    async def close(self):
+        """Bağlantıyı güvenli kapatır."""
+        if self.redis_client:
+            await self.redis_client.aclose()
+
+
+redis_manager = RedisManager(redis_port=Settings.REDIS_PORT, redis_host=Settings.REDIS_HOST)

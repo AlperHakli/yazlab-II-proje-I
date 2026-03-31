@@ -1,20 +1,27 @@
-
-planlanan proje klasör yapısı
-
-
 yazlab-II-proje-I/
-├── dispatcher/              API Gateway (TDD burada yapılacak)
-│   ├── tests/               Önce buradaki testler yazılacak!
-│   ├── app/                 Dispatcher kodları
-│   └── Dockerfile
-├── auth-service/            Oturum açma servisi
-│   ├── app/
-│   └── Dockerfile
-├── service-a/               Mikroservis (Örn: Product Service)
-│   ├── app/
-│   └── Dockerfile
-├── service-b/               Mikroservis (Örn: Order Service)
-│   ├── app/
-│   └── Dockerfile
-├── docker-compose.yml       docker dosyası
-└── README.md                Mermaid diyagramları burada olacak
+│
+├── services/                # Tüm mikroservislerin ve gateway'in toplandığı ortak dizin
+│   │
+│   ├── dispatcher/          # API Gateway
+│   │   ├── app/             # Uygulama kodları
+│   │   ├── tests/           # TDD testleri
+│   │   └── Dockerfile
+│   │
+│   ├── auth-service/        # Kimlik Doğrulama Servisi
+│   │   ├── app/
+│   │   ├── tests/
+│   │   └── Dockerfile
+│   │
+│   ├── service-a/           # Book Servisi
+│   │   ├── app/
+│   │   ├── tests/
+│   │   └── Dockerfile
+│   │
+│   └── service-b/           # Borrow Servisi
+│       ├── app/
+│       ├── tests/
+│       └── Dockerfile
+│
+├── docker-compose.yml       # Build yollarını (context) services/alt-klasör şeklinde güncelleyeceksin
+├── envconfig_and_settings   # Ortak yapılandırma dosyası
+└── README.md                # Proje dokümantasyonu ve diyagramlar

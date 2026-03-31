@@ -9,3 +9,6 @@ Requires-Dist: fastapi
 Requires-Dist: httpx
 Requires-Dist: respx
 Requires-Dist: dotenv
+Requires-Dist: redis
+Requires-Dist: beanie
+Requires-Dist: motor
