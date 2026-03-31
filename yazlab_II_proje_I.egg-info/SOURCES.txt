@@ -2,6 +2,7 @@ pyproject.toml
 services/__init__.py
 services/auth_service/__init__.py
 services/auth_service/app/__init__.py
+services/auth_service/app/database.py
 services/auth_service/app/logic.py
 services/auth_service/app/main.py
 services/auth_service/app/pydantic_models.py

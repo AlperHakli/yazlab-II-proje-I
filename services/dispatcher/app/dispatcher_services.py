@@ -53,12 +53,12 @@ class DispatcherProxyService():
                 if response.status_code >= 400:
                     raise HTTPException(status_code=response.status_code, detail=response.json())
 
-                response_data = response.json()
+                # response_data = response.json()
 
-            if user and isinstance(response_data, dict):
-                response_data["id"] = user.get("id")
+            # if user and isinstance(response_data, dict):
+            #     response_data["id"] = user.get("id")
 
-                return response_data
+                return response.json()
 
 
 
