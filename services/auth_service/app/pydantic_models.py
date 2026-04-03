@@ -17,7 +17,7 @@ class UserModel(Document):
     userID: str = Field(json_schema_extra={"unique": True})
     username: str = Field(json_schema_extra={"unique": True})
     password: str
-    full_name: str
+    fullname: str
 
-    class Settings():
+    class Settings:
         name ="users"

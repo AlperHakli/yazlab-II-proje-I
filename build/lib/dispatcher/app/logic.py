@@ -39,7 +39,7 @@ async def forward_request(target_url:str,user:dict):
             headers = {"X_User_ID" : str(user["id"])}
             response = await client.get(target_url , headers = headers)
 
-            #Dispatcher in dönen veriye ekstra bir user_id eklemesini sağlar
+            #Dispatcher in dönen veriye ekstra bir userID eklemesini sağlar
             data = response.json()
             if isinstance(data , dict):
                 data["id"] = user["id"]

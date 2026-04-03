@@ -3,7 +3,7 @@ from unittest.mock import patch, AsyncMock
 from services.dispatcher.app.main import app
 import pytest
 from fastapi.testclient import TestClient
-from envconfig_and_settings import Settings
+from services.dispatcher.config import settings
 from services.dispatcher.app.redis_client import redis_manager
 
 
@@ -19,14 +19,14 @@ def bookendpoint():
     """
     Sabit olan book url sini döndürür
     """
-    return  Settings.BOOK_SERVICE_URL
+    return  settings.BOOK_SERVICE_URL
 
 @pytest.fixture
 def borrowendpoint():
     """
     Sabit olan borrow url sini döndürür
     """
-    return  Settings.BORROW_SERVICE_URL
+    return  settings.BORROW_SERVICE_URL
 
 @pytest.fixture(autouse=True)
 def mock_redis():

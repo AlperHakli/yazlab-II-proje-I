@@ -7,7 +7,7 @@ from fastapi import status
 
 def test_login_success(authendpoint, authclient, mock_redis):
     mock_credentials = {
-        "username": "admin",
+        "userName": "admin",
         "password": "admin123"
     }
 
@@ -31,7 +31,7 @@ def test_login_failed_wrong_credentials(authendpoint , authclient , mock_redis):
     """
 
     mock_credentials = {
-        "username": "admin",
+        "userName": "admin",
         "password": "wrongadmin123"
     }
 

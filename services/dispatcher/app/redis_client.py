@@ -1,6 +1,5 @@
 import redis.asyncio as redis
-import os
-from envconfig_and_settings import Settings
+from services.dispatcher.config import settings
 
 
 class RedisManager():
@@ -17,7 +16,7 @@ class RedisManager():
         )
 
     async def getUserID(self, token: str):
-        """Token karşılığındaki user_id'yi getirir (Dispatcher kullanacak)."""
+        """Token karşılığındaki userID'yi getirir (Dispatcher kullanacak)."""
         return await self.redis_client.get(token)
 
     async def close(self):
@@ -26,4 +25,4 @@ class RedisManager():
             await self.redis_client.aclose()
 
 
-redis_manager = RedisManager(redis_port=Settings.REDIS_PORT, redis_host=Settings.REDIS_HOST)
+redis_manager = RedisManager(redis_port=settings.REDIS_PORT, redis_host=settings.REDIS_HOST)

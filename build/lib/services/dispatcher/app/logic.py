@@ -1,8 +1,6 @@
 from typing import Optional
-import envconfig_and_settings
-import httpx
-from fastapi import Header, Depends, HTTPException, status
-import envconfig_and_settings
+from services.dispatcher import config
+from fastapi import Header, HTTPException, status
 from services.dispatcher.app.redis_client import redis_manager
 
 #auth katmanı
@@ -10,7 +8,7 @@ from services.dispatcher.app.redis_client import redis_manager
 
 def get_service_url(service_name: str):
     def _returner():
-        return envconfig_and_settings.Settings.SERVICES.get(service_name)
+        return envconfig_and_settings.settings.SERVICES.get(service_name)
 
     return _returner
 

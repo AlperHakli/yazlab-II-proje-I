@@ -32,10 +32,11 @@ dependencies = [
     "redis",
 
     #mongodb için object document mapper
-    "beanie",
+    "beanie==2.1.0",
 
     #mongodb asenkron sürücüsü kısaca veritabanı motoru
-    "motor",
+    #artık pymongo nun native veritbanı motorunu kullanıyorum
+    #"motor==3.3.2",
 
     #mongodb için async mock yapabileceğim paket
     "mongomock-motor"

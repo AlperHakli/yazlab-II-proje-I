@@ -1,15 +1,15 @@
 import respx
 import httpx
-from envconfig_and_settings import Settings
+from services.dispatcher.config import settings
 import pytest
 
-@pytest.mark.parametrize("endpoint , target_url" , Settings.SERVICES.items())
+@pytest.mark.parametrize("endpoint , target_url" , settings.SERVICES.items())
 @respx.mock
 
 def test_dispatcher_enriches_with_user_id(client , endpoint , target_url):
         """
         seneryo: kullanıcı geçerli token ile /books yada /borrow endpointlerine istek atar
-        hedef: amaçlanan şey burada dispatcher in cevaba user_id yide eklemesi
+        hedef: amaçlanan şey burada dispatcher in cevaba userID yide eklemesi
         ek not: burada amaç dispatcher ile mikroservis arasındaki bir olayı kontrol etmek
         """
 

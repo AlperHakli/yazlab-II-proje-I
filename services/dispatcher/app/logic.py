@@ -1,13 +1,13 @@
 from typing import Optional
-from fastapi import Header, Depends, HTTPException, status
-import envconfig_and_settings
+from fastapi import Header, HTTPException, status
+from services.dispatcher import config
 from services.dispatcher.app.redis_client import redis_manager
 
 
 
 def get_service_url(service_name: str):
     def _returner():
-        return envconfig_and_settings.Settings.SERVICES.get(service_name)
+        return config.settings.SERVICES.get(service_name)
 
     return _returner
 
