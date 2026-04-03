@@ -28,62 +28,63 @@ app = FastAPI(lifespan=lifespan)
 
 # books endpointi
 
-@app.api_route("/books/{rest_of_path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
-async def book_proxy_endpoint(
-        request: Request,
-        rest_of_path: str,
-        body_content: Optional[dict] = Body(None), # Swagger'da kutucuk açar
-        user: dict = Depends(verify_token),
-        base_url: str = Depends(get_service_url("/books")),
-):
-    # Swagger'dan gelen veya gelmeyen tüm body'yi ham (bytes) olarak okur
-    raw_body = await request.body()
+# Dispatcher main.py
 
-    return await book_service_proxy.forward(
+async def common_proxy_logic(request: Request, rest_of_path: str, body_content: Optional[dict], user: dict, proxy_service, base_url: str):
+    """Tekrardan kaçınmak için ortak proxy mantığı"""
+    raw_body = await request.body()
+    return await proxy_service.forward(
         base_url=base_url,
         rest_of_path=rest_of_path,
-        method=request.method,
+        method=request.method, #request den gelen metod
         body=raw_body,
         headers=dict(request.headers),
         user=user
     )
 
-# borrow endpointi
-@app.api_route("/borrow/{rest_of_path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
-async def borrow_proxy_endpoint(
-        request: Request,
-        rest_of_path: str,
-        body_content: Optional[dict] = Body(None), # Swagger'da kutucuk açar
-        user: dict = Depends(verify_token),
-        base_url: str = Depends(get_service_url("/borrow"))
-):
-    raw_body = await request.body()
+# Auth servisleri
+@app.post("/auth/{rest_of_path:path}", tags=["Auth"])
+async def auth_post(request: Request, rest_of_path: str, body: Optional[dict] = Body(None), base_url=Depends(get_service_url("/auth"))):
+    return await common_proxy_logic(request, rest_of_path, body, None, auth_service_proxy, base_url)
 
-    return await borrow_service_proxy.forward(
-        base_url=base_url,
-        rest_of_path=rest_of_path,
-        method=request.method,
-        body=raw_body,
-        headers=dict(request.headers),
-        user=user
-    )
+@app.get("/auth/{rest_of_path:path}", tags=["Auth"])
+async def auth_get(request: Request, rest_of_path: str, base_url=Depends(get_service_url("/auth"))):
+    return await common_proxy_logic(request, rest_of_path, None, None, auth_service_proxy, base_url)
 
-# auth endpointi
-@app.api_route("/auth/{rest_of_path:path}", methods=["GET", "POST", "PUT", "DELETE"])
-async def auth_proxy_endpoint(
-        request: Request,
-        rest_of_path: str,
-        body_content: Optional[dict] = Body(None), # Login/Signup bilgilerini buradan girebilirsin
-        user: Optional[dict] = None, # Auth için token zorunlu değil
-        base_url: str = Depends(get_service_url("/auth"))
-):
-    raw_body = await request.body()
 
-    return await auth_service_proxy.forward(
-        base_url=base_url,
-        rest_of_path=rest_of_path,
-        method=request.method,
-        body=raw_body,
-        headers=dict(request.headers),
-        user=user
-    )
+# Book servisleri
+@app.get("/books/{rest_of_path:path}", tags=["Books"])
+async def get_books(request: Request, rest_of_path: str, user: dict = Depends(verify_token), base_url=Depends(get_service_url("/books"))):
+    return await common_proxy_logic(request, rest_of_path, user, book_service_proxy, base_url)
+
+@app.post("/books/{rest_of_path:path}", tags=["Books"])
+async def post_books(request: Request, rest_of_path: str, body: Optional[dict] = Body(None), user: dict = Depends(verify_token), base_url=Depends(get_service_url("/books"))):
+    return await common_proxy_logic(request, rest_of_path, user, book_service_proxy, base_url)
+
+@app.put("/books/{rest_of_path:path}", tags=["Books"])
+async def put_books(request: Request, rest_of_path: str, body: Optional[dict] = Body(None), user: dict = Depends(verify_token), base_url=Depends(get_service_url("/books"))):
+    return await common_proxy_logic(request, rest_of_path, user, book_service_proxy, base_url)
+
+@app.delete("/books/{rest_of_path:path}", tags=["Books"])
+async def delete_books(request: Request, rest_of_path: str, user: dict = Depends(verify_token), base_url=Depends(get_service_url("/books"))):
+    return await common_proxy_logic(request, rest_of_path, user, book_service_proxy, base_url)
+
+# Borrow servisleri
+
+@app.get("/borrow/{rest_of_path:path}", tags=["Borrow"])
+async def get_borrow(request: Request, rest_of_path: str, user: dict = Depends(verify_token), base_url=Depends(get_service_url("/borrow"))):
+    return await common_proxy_logic(request, rest_of_path, user, borrow_service_proxy, base_url)
+
+@app.post("/borrow/{rest_of_path:path}", tags=["Borrow"])
+async def post_borrow(request: Request, rest_of_path: str, body: Optional[dict] = Body(None), user: dict = Depends(verify_token), base_url=Depends(get_service_url("/borrow"))):
+    return await common_proxy_logic(request, rest_of_path, user, borrow_service_proxy, base_url)
+
+@app.put("/borrow/{rest_of_path:path}", tags=["Borrow"])
+async def put_borrow(request: Request, rest_of_path: str, body: Optional[dict] = Body(None), user: dict = Depends(verify_token), base_url=Depends(get_service_url("/borrow"))):
+    return await common_proxy_logic(request, rest_of_path, user, borrow_service_proxy, base_url)
+
+@app.delete("/borrow/{rest_of_path:path}", tags=["Borrow"])
+async def delete_borrow(request: Request, rest_of_path: str, user: dict = Depends(verify_token), base_url=Depends(get_service_url("/borrow"))):
+    return await common_proxy_logic(request, rest_of_path, user, borrow_service_proxy, base_url)
+
+

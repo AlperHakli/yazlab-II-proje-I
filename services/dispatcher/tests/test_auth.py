@@ -1,10 +1,10 @@
 import pytest
-from envconfig_and_settings import Settings
+from services.dispatcher.config import settings
 import respx
 import httpx
 
 #TEST A
-@pytest.mark.parametrize("endpoint", Settings.PROTECTED_ENDPOINTS)
+@pytest.mark.parametrize("endpoint", settings.PROTECTED_ENDPOINTS)
 def test_endpoints_require_auth(client, endpoint):
     """
     bu test verilen listedeki tüm endpointler için daha dispatcher seviyesinde yetkisiz erişimmi kontrol eder auth testi yapar
@@ -20,7 +20,7 @@ def test_endpoints_require_auth(client, endpoint):
 
 #TEST B
 
-@pytest.mark.parametrize("endpoint", Settings.PROTECTED_ENDPOINTS)
+@pytest.mark.parametrize("endpoint", settings.PROTECTED_ENDPOINTS)
 @respx.mock
 def test_valid_auth_success(client, endpoint):
     """

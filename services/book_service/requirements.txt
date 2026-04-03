@@ -1,2 +1,5 @@
 fastapi
 uvicorn
+beanie
+dotenv
+pymongo>=4.9

@@ -1,3 +1,4 @@
+import traceback
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -8,14 +9,23 @@ from services.auth_service.app.database import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    try:
+        await init_db()
 
-    await init_db()
+        # Uygulama başlarken bağlantıyı kur
+        await redis_manager.connect()
+        yield
+        # Uygulama kapanırken bağlantıyı kes
+        await redis_manager.close()
 
-    # Uygulama başlarken bağlantıyı kur
-    await redis_manager.connect()
-    yield
-    # Uygulama kapanırken bağlantıyı kes
-    await redis_manager.close()
+    except Exception as e:
+        print("\n" + "=" * 50)
+        print("Kritik başlangıç hatası auth service")
+        print(f"Hata Türü: {type(e).__name__}")
+        print(f"Hata Mesajı: {str(e)}")
+        traceback.print_exc()
+        print("=" * 50 + "\n")
+        raise e
 
 app = FastAPI(lifespan=lifespan)
 

@@ -4,7 +4,7 @@ import pytest
 from beanie import init_beanie
 from mongomock_motor import AsyncMongoMockClient
 
-from envconfig_and_settings import Settings
+from services.dispatcher.config import settings
 from services.auth_service.app.main import app
 from fastapi.testclient import TestClient
 
@@ -17,7 +17,7 @@ def authendpoint():
     """
     Sabit olan ana auth url sini döndürür
     """
-    return Settings.AUTH_SERCICE_URL
+    return settings.AUTH_SERCICE_URL
 
 @pytest.fixture
 def authclient():

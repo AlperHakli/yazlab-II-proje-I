@@ -8,7 +8,7 @@ import uuid
 async def login_logic(request: LoginRequest):
     """
     Giriş yapma kısmının arkaplan kodu
-    :param request: gelen veri (username ve şifre)
+    :param request: gelen veri (userName ve şifre)
     """
     user = await UserModel.find_one(UserModel.username == request.username, UserModel.password == request.password)
 
@@ -47,4 +47,4 @@ async def signup_logic(request: SignUpRequest):
 
     await new_user.insert()
 
-    return {"message": "Kayıt başarılı", "user_id": str(new_user.id)}
+    return {"message": "Kayıt başarılı", "userID": str(new_user.id)}

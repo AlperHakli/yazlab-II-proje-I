@@ -2,13 +2,14 @@ from services.auth_service.app.pydantic_models import LoginRequest, SignUpReques
 from fastapi import HTTPException, status
 from services.auth_service.app.redis_client import redis_manager
 from services.auth_service.app.pydantic_models import UserModel
+from uuid import uuid4
 import uuid
 
 
 async def login_logic(request: LoginRequest):
     """
     Giriş yapma kısmının arkaplan kodu
-    :param request: gelen veri (username ve şifre)
+    :param request: gelen veri (userName ve şifre)
     """
     user = await UserModel.find_one(UserModel.username == request.username, UserModel.password == request.password)
 
@@ -39,12 +40,15 @@ async def signup_logic(request: SignUpRequest):
     if existing_user is not None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Böyle bir kullanıcı mevcuttur")
 
+    user_id = str(uuid.uuid4())
+
     new_user = UserModel(
+        userID= user_id,
         username=request.username,
         password=request.password,
-        full_name=request.fullname
+        fullname=request.fullname
     )
 
     await new_user.insert()
 
-    return {"message": "Kayıt başarılı", "user_id": str(new_user.id)}
+    return {"message": "Kayıt başarılı", "userID": str(new_user.id)}
