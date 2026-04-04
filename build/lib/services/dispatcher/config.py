@@ -26,11 +26,7 @@ class Settings():
 
     #redis url si ve portu
     REDIS_PORT = os.getenv("REDIS_PORT", 6379)
-    REDIS_HOST = os.getenv("REDIS_HOST", "redis-cache")
-
-    #secret key ve algoritma
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    ALGORITHM =os.getenv("ALGORITHM")
+    REDIS_HOST = os.getenv("redis_host", "localhost")
 
 
 settings = Settings()

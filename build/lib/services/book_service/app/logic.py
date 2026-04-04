@@ -4,17 +4,15 @@ import uuid
 
 async def decreasebookcount(request: BorrowOrBringBook):
     try:
-        result = await AllBooks.find_one(
+        book = await AllBooks.find_one(
             AllBooks.book_id == request.bookID,
             AllBooks.book_name == request.bookName,
             AllBooks.quantity>0
         ).update({"$inc": {AllBooks.quantity: -1}})
 
-        if result.modified_count == 0:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Stokta kitap kalmadı veya geçersiz kitap bilgisi."
-            )
+        if not book:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="There is no available book with specified book name")
 
         return {
             "userID": request.userID,
@@ -31,17 +29,15 @@ async def decreasebookcount(request: BorrowOrBringBook):
 
 async def increasebookcount(request: BorrowOrBringBook):
     try:
-        result = await AllBooks.find_one(
+        book = await AllBooks.find_one(
             AllBooks.book_name == request.bookName,
             AllBooks.book_id == request.bookID
 
         ).update({"$inc": {AllBooks.quantity: 1}})
 
-        if result.modified_count == 0:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Stokta kitap kalmadı veya geçersiz kitap bilgisi."
-            )
+        if not book:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail="There is no book with specified book name")
 
 
         return {
@@ -57,10 +53,12 @@ async def increasebookcount(request: BorrowOrBringBook):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR , detail=f"Warning critical error on bringabook {e}")
 
 
-async def addbook(request: AddBook):
+async def addbook(request: AddBook , fastapiresponse: Response):
     try:
         currentbook = await AllBooks.find_one(
             AllBooks.book_name == request.bookName,
+            AllBooks.book_id == request.bookID
+
         )
 
         if currentbook:
@@ -76,7 +74,7 @@ async def addbook(request: AddBook):
             quantity=request.quantity)
 
         await new_book.insert()
-
+        fastapiresponse.status_code = status.HTTP_201_CREATED
 
         return {
             "book id": bookID,

@@ -18,8 +18,6 @@ class DispatcherProxyService():
             method: str,
             body,
             headers: dict,
-            request_data: dict = None,
-            user: dict = None
 
     ):
         """
@@ -38,16 +36,34 @@ class DispatcherProxyService():
         else:
             full_url = base
 
+        cleaned_headers = {
+            k: v for k, v in headers.items()
+            if k.lower() not in ["content-length", "host"]
+        }
+
+        request_kwargs = {
+            "method": method,
+            "url": full_url,
+            "headers": cleaned_headers,
+            "timeout": 10.0
+        }
+
+
+        if isinstance(
+                body,
+                dict
+                ):
+            request_kwargs["json"] = body
+        else:
+            request_kwargs["content"] = body
+
+
         try:
 
             async with httpx.AsyncClient() as client:
                 response = await client.request(
-                    method=method,
-                    url=full_url,
-                    content=body,
-                    headers=headers,
-                    timeout=10.0
-                )
+                    **request_kwargs
+                    )
 
                 # mikroservis in hata kodu yansılılır
                 if response.status_code >= 400:

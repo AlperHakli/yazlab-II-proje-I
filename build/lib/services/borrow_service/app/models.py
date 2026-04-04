@@ -23,12 +23,9 @@ class BorrowBook(BaseModel):
 class BringBook(BaseModel):
     userID:str
     bookID:str
-    userName:str
+    username:str
     bookName:str
     borrowID: str
-
-class UserIDModel(BaseModel):
-    userID:str
 
 
 

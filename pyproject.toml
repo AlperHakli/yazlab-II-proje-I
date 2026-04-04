@@ -39,7 +39,8 @@ dependencies = [
     #"motor==3.3.2",
 
     #mongodb için async mock yapabileceğim paket
-    "mongomock-motor"
+    "mongomock-motor",
+    "pyjwt"
 
 ]
 # asenkron testleri dekoratörle belirtmeden otomatik algılatan yapı

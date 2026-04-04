@@ -1,14 +1,13 @@
 from typing import Optional
-from services.dispatcher import config
 from fastapi import Header, HTTPException, status
+from services.dispatcher import config
 from services.dispatcher.app.redis_client import redis_manager
 
-#auth katmanı
 
 
 def get_service_url(service_name: str):
     def _returner():
-        return envconfig_and_settings.settings.SERVICES.get(service_name)
+        return config.settings.SERVICES.get(service_name)
 
     return _returner
 
@@ -25,8 +24,8 @@ async def verify_token(authorization: Optional[str] = Header(None)):
 
     token = authorization.split(" ")[1]
 
-    # GERÇEK REDIS KONTROLÜ
-    user_id = await redis_manager.getUserID(token)
+    # gerçek redis kontrolü
+    user_id = await redis_manager.getUserID(authorization)
 
     if not user_id:
         raise HTTPException(
@@ -34,7 +33,7 @@ async def verify_token(authorization: Optional[str] = Header(None)):
             detail="Yetkisiz erişim: Geçersiz veya süresi dolmuş token"
         )
 
-    # Burası önemli: ID'yi dönüyoruz ki Dispatcher bunu kullanabilsin
-    return {"id": user_id, "role": "admin"}  # Role bilgisini de ileride Redis'e ekleyebilirsin
+    #id döndürülür
+    return {"id": user_id, "role": "user"}
 
 

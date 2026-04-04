@@ -11,6 +11,6 @@ Requires-Dist: httpx
 Requires-Dist: respx
 Requires-Dist: dotenv
 Requires-Dist: redis
-Requires-Dist: beanie
-Requires-Dist: motor
+Requires-Dist: beanie==2.1.0
 Requires-Dist: mongomock-motor
+Requires-Dist: pyjwt

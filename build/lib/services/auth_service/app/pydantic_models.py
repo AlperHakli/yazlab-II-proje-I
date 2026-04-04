@@ -14,10 +14,10 @@ class SignUpRequest(BaseModel):
 
 # Kullanıcıların tutulduğu nosql koleksiyonu
 class UserModel(Document):
-    userID: str = Field(unique= True)
-    username: str = Field(unique= True)
+    userID: str = Field(json_schema_extra={"unique": True})
+    username: str = Field(json_schema_extra={"unique": True})
     password: str
-    full_name: str
+    fullname: str
 
-    class Settings():
+    class Settings:
         name ="users"
