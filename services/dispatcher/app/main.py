@@ -68,7 +68,7 @@ async def common_proxy_logic(
             ),
     )
 
-# AUTH SERVİSLERİ
+# -------------- AUTH SERVİSLERİ ------------------
 
 
 @app.post(
@@ -117,7 +117,7 @@ async def get_books(
     user: dict = Depends(verify_token),
     base_url=Depends(get_service_url("/books"))
 ):
-    # Okul projesi için params kalsın dedin, ekliyoruz
+
 
     return await common_proxy_logic(
         request=request,
