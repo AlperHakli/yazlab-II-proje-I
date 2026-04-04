@@ -24,5 +24,14 @@ class RedisManager():
         if self.redis_client:
             await self.redis_client.aclose()
 
+    async def checkToken(self, token: str) -> bool:
+        """
+        redis de bu token varmı kontrol eder token varsa True döner
+        :param token:
+        :return:
+        """
+        result = await self.redis_client.get(token)
+        return result is not None
+
 
 redis_manager = RedisManager(redis_port=settings.REDIS_PORT, redis_host=settings.REDIS_HOST)

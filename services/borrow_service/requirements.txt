@@ -1,5 +1,6 @@
 fastapi
 uvicorn
 beanie
+httpx
 dotenv
 pymongo>=4.9

@@ -4,3 +4,4 @@ beanie
 dotenv
 redis
 pymongo>=4.9
+pyjwt

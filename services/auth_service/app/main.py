@@ -7,6 +7,8 @@ from services.auth_service.app.logic import login_logic , signup_logic
 from services.auth_service.app.redis_client import redis_manager
 from services.auth_service.app.database import init_db
 
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:

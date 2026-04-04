@@ -2,7 +2,10 @@ from typing import Optional
 from fastapi import Header, HTTPException, status
 from services.dispatcher import config
 from services.dispatcher.app.redis_client import redis_manager
-
+from jwt import encode , decode
+from datetime import datetime , timedelta
+from zoneinfo import ZoneInfo
+from services.dispatcher.config import settings
 
 
 def get_service_url(service_name: str):
@@ -12,28 +15,34 @@ def get_service_url(service_name: str):
     return _returner
 
 
-async def verify_token(authorization: Optional[str] = Header(None)):
+async def verify_token(token: Optional[str] = Header(None)):
     """
     Redis üzerinden token kontrolü yapan ana fonksiyon
     """
-    if not authorization or not authorization.startswith("Bearer "):
+    if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Yetkisiz erişim: Token bulunamadı"
         )
+    try:
+        payload = decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
 
-    token = authorization.split(" ")[1]
+        user_id = payload.get("user_id")
 
-    # gerçek redis kontrolü
-    user_id = await redis_manager.getUserID(token)
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Token içinde kullanıcı bilgisi yok")
 
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Yetkisiz erişim: Geçersiz veya süresi dolmuş token"
-        )
+        is_active = await redis_manager.checkToken(token)
 
-    #id döndürülür
-    return {"id": user_id, "role": "admin"}
+        if not is_active:
+            raise HTTPException(status_code=401, detail="Oturum sonlanmış")
+
+
+        # id döndürülür
+        return {"id": user_id, "role": "user"}
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Token correction error: {str(e)}")
+
+
 
 

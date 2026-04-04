@@ -11,9 +11,4 @@ class Settings():
     REDIS_HOST = os.getenv("REDIS_HOST" , "localhost")
 
 
-    #secret key ve algoritma
-    SECRET_KEY = os.getenv("SECRET_KEY")
-    ALGORITHM =os.getenv("ALGORITHM")
-
-
 settings = Settings()

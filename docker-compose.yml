@@ -5,21 +5,21 @@ services:
     image: mongo:latest
     container_name: auth-db
     ports:
-      - "27017:27017"
+      - "27020:27017"
     restart: always
 
   book-db:
     image: mongo:latest
     container_name: book-db
     ports:
-      - "27018:27017" # dışarıdan 27018 ile bağlanıldı
+      - "27021:27017" # dışarıdan 27018 ile bağlanıldı
     restart: always
 
   borrow-db:
     image: mongo:latest
     container_name: borrow-db
     ports:
-      - "27019:27017" # dışarıdan 27019 ile bağlanıldı
+      - "27022:27017" # dışarıdan 27019 ile bağlanıldı
     restart: always
 
   # redis veritabanı

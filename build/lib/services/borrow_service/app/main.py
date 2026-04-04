@@ -3,7 +3,7 @@ import traceback
 from fastapi import FastAPI
 from services.borrow_service.app.database import init_borrow_database
 from services.borrow_service.app.logic import borrowbook , bringbook , getallborrows
-from services.borrow_service.app.models import BringBook , BorrowBook , UserIDModel
+from services.borrow_service.app.models import BringBook , BorrowBook
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -41,8 +41,8 @@ async def borrow_book(request: BorrowBook):
 async def bring_book(request: BringBook):
     return await bringbook(request=request)
 
-@app.post("/all_borrows")
-async def get_all_borrows(request: UserIDModel):
-    return await getallborrows(request=request)
+@app.get("/all_borrows")
+async def get_all_borrows(user_id: str):
+    return await getallborrows(user_id=user_id)
 
 

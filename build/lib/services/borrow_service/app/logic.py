@@ -1,9 +1,9 @@
 from fastapi import status , HTTPException , Response
 import httpx
 from services.borrow_service.config import settings
-from services.borrow_service.app.models import BorrowBook , AllBorrows , BringBook , UserIDModel
+from services.borrow_service.app.models import BorrowBook , AllBorrows , BringBook
 import uuid
-async def borrowbook(request: BorrowBook):
+async def borrowbook(request: BorrowBook , fastapiresponse: Response):
     try:
         full_url = f"{settings.BOOK_SERVICE_URL}/borrow_book"
 
@@ -18,26 +18,7 @@ async def borrowbook(request: BorrowBook):
                 })
 
             if response.status_code != 200:
-
-                try:
-                    error_payload = response.json()
-
-                    remote_detail = error_payload.get(
-                        "detail",
-                        "Bilinmeyen mikroservis hatası"
-                        )
-                except Exception:
-
-                    remote_detail = response.text
-
-
-                raise HTTPException(
-                    status_code=response.status_code,
-                    detail=remote_detail
-
-                )
-
-
+                raise HTTPException(status_code=response.status_code , detail="An error occur in borrowbook")
 
 
         borrowID = str(uuid.uuid4())
@@ -54,6 +35,7 @@ async def borrowbook(request: BorrowBook):
 
         await newborrow.insert()
 
+        fastapiresponse.status_code = status.HTTP_201_CREATED
 
 
         return {
@@ -77,7 +59,6 @@ async def bringbook(request: BringBook):
         full_url = f"{settings.BOOK_SERVICE_URL}/bring_book"
 
 
-
         async with httpx.AsyncClient() as client:
             response = await client.patch(
                 full_url,
@@ -89,23 +70,7 @@ async def bringbook(request: BringBook):
                 })
 
             if response.status_code != 200:
-
-                try:
-                    error_payload = response.json()
-
-                    remote_detail = error_payload.get(
-                        "detail",
-                        "Bilinmeyen mikroservis hatası"
-                    )
-                except Exception:
-
-                    remote_detail = response.text
-
-                raise HTTPException(
-                    status_code=response.status_code,
-                    detail=remote_detail
-
-                )
+                raise HTTPException(status_code=response.status_code , detail="An error occur in bringbook")
 
         deleted_book = await AllBorrows.find_one(AllBorrows.borrowID == request.borrowID)
 
@@ -131,11 +96,11 @@ async def bringbook(request: BringBook):
                             detail=f"Warning critical error on bringbook {e}")
 
 
-async def getallborrows(request: UserIDModel):
+async def getallborrows(user_id: str):
     try:
-        all_borrows = AllBorrows.find(AllBorrows.userID == request.userID)
+        all_borrows = AllBorrows.find_all(AllBorrows.userID == user_id)
         borrow_list = await all_borrows.to_list()
-        if not borrow_list:
+        if len(borrow_list)<=0:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="User with specified user id doesn't exist or doesn't borrowed a book")
 
 

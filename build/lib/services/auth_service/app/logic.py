@@ -2,6 +2,7 @@ from services.auth_service.app.pydantic_models import LoginRequest, SignUpReques
 from fastapi import HTTPException, status
 from services.auth_service.app.redis_client import redis_manager
 from services.auth_service.app.pydantic_models import UserModel
+
 import uuid
 
 
@@ -16,6 +17,8 @@ async def login_logic(request: LoginRequest):
         access_token = str(uuid.uuid4())
 
         await redis_manager.setToken(access_token, user_id=user.userID)
+
+
 
         return {
             "access_token": access_token,  # Şimdilik statik
@@ -39,10 +42,13 @@ async def signup_logic(request: SignUpRequest):
     if existing_user is not None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Böyle bir kullanıcı mevcuttur")
 
+    user_id = str(uuid.uuid4())
+
     new_user = UserModel(
+        userID= user_id,
         username=request.username,
         password=request.password,
-        full_name=request.fullname
+        fullname=request.fullname
     )
 
     await new_user.insert()
