@@ -1,7 +1,8 @@
 # Mikroservis Tabanlı Kütüphane Yönetim Sistemi
 
 Bu proje, mikroservis mimarisi kullanılarak geliştirilmiş bir kütüphane yönetim sistemidir. Sistem; kullanıcı doğrulama, kitap yönetimi, ödünç alma işlemleri ve merkezi dispatcher servisi içermektedir.
-## Sistem Mimarisi
+
+## 1. Sistem Mimarisi
 
 ```mermaid
 graph TD
@@ -21,9 +22,11 @@ graph TD
     Promtail[Promtail] --> Loki[Loki]
     Prometheus --> Grafana[Grafana]
     Loki --> Grafana
+```
 
 
 ---
+
 
 4. KULLANILAN TEKNOLOJİLER
 
