@@ -8,6 +8,9 @@ from fastapi import (
     Body
 )
 
+from prometheus_client import Counter, Histogram, generate_latest
+import time
+from fastapi.responses import Response
 from services.dispatcher.app.redis_client import redis_manager
 from services.dispatcher.app.logic import (
     verify_token,
@@ -32,6 +35,35 @@ async def lifespan(
 app = FastAPI(
     lifespan=lifespan
     )
+REQUEST_COUNT = Counter(
+    "http_requests_total",
+    "Total HTTP Requests",
+    ["method", "endpoint"]
+)
+
+REQUEST_LATENCY = Histogram(
+    "http_request_duration_seconds",
+    "Request latency",
+    ["endpoint"]
+)
+@app.middleware("http")
+async def metrics_middleware(request: Request, call_next):
+    start = time.time()
+
+    response = await call_next(request)
+
+    duration = time.time() - start
+
+    REQUEST_COUNT.labels(
+        method=request.method,
+        endpoint=request.url.path
+    ).inc()
+
+    REQUEST_LATENCY.labels(
+        endpoint=request.url.path
+    ).observe(duration)
+
+    return response
 
 
 # books endpointi
@@ -379,3 +411,6 @@ async def delete_borrow(
         base_url=base_url,
         modified_body=body
     )
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type="text/plain")

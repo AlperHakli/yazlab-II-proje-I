@@ -4,3 +4,4 @@ httpx
 redis
 pydantic-settings
 pyjwt
+prometheus-client
