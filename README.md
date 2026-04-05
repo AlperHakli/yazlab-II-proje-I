@@ -1,43 +1,72 @@
-# Kütüphane Yönetim Sistemi - Mikroservis Mimarisi Projesi
+# Mikroservis Tabanlı Kütüphane Yönetim Sistemi
 
-**Ders:** Yazılım Geliştirme Laboratuvarı-II  
-**Proje:** Proje - 1  
-**Ekip Üyeleri:**  
-- İbrahim Emir Yıldız  
-- Alper Haklı  
+Bu proje, mikroservis mimarisi kullanılarak geliştirilmiş bir kütüphane yönetim sistemidir. Sistem; kullanıcı doğrulama, kitap yönetimi, ödünç alma işlemleri ve merkezi dispatcher servisi içermektedir.
+## Sistem Mimarisi
 
-**Tarih:** 2026
-## 1. Giriş
+```mermaid
+graph TD
+    Client[Client / Frontend] --> Dispatcher[Dispatcher API Gateway]
 
-Bu projede, mikroservis mimarisi temelli bir kütüphane yönetim sistemi geliştirilmiştir. Sistem; kullanıcı doğrulama, kitap yönetimi, ödünç alma işlemleri ve tüm dış isteklerin merkezi olarak yönlendirilmesini sağlayan bir dispatcher servisinden oluşmaktadır.
+    Dispatcher --> AuthService[Auth Service]
+    Dispatcher --> BookService[Book Service]
+    Dispatcher --> BorrowService[Borrow Service]
 
-Projede amaç, monolitik yapı yerine birbirinden bağımsız çalışan servisler geliştirerek ölçeklenebilir, yönetilebilir ve güvenli bir yazılım mimarisi oluşturmaktır. Bu kapsamda sistemde bir adet dispatcher, bir adet kimlik doğrulama servisi ve en az iki işlevsel mikroservis kullanılmıştır.
+    AuthService --> AuthDB[(Auth MongoDB)]
+    BookService --> BookDB[(Book MongoDB)]
+    BorrowService --> BorrowDB[(Borrow MongoDB)]
 
-Geliştirilen senaryoda kitap verileri ile ödünç alma verileri birbirinden ayrılmış, her servis kendi bağımsız veri tabanı yapısına sahip olacak şekilde tasarlanmıştır. Böylece veri izolasyonu sağlanmış, servislerin görevleri net biçimde ayrıştırılmıştır.
+    Dispatcher --> Redis[(Redis Cache)]
 
-Ayrıca proje kapsamında dispatcher servisi üzerinden geçen trafik gözlemlenmiş, Prometheus ve Grafana ile metrikler görselleştirilmiş, Loki ile loglar tablo formatında izlenmiştir. Sistem davranışı k6 aracı ile yük testi altında incelenmiş ve sonuçlar rapora dahil edilmiştir.
-## 2. Projenin Amacı
+    Dispatcher --> Prometheus[Prometheus]
+    Promtail[Promtail] --> Loki[Loki]
+    Prometheus --> Grafana[Grafana]
+    Loki --> Grafana
 
-Bu projenin temel amacı, modern yazılım geliştirme süreçlerinde yaygın olarak kullanılan mikroservis mimarisini uygulamalı olarak gerçekleştirmektir. Bunun yanında tüm dış istemci trafiğini tek bir giriş noktasında toplayan dispatcher yapısının geliştirilmesi, yetkilendirme mekanizmasının merkezi hale getirilmesi ve servisler arası iletişimin doğru biçimde yönetilmesi hedeflenmiştir.
 
-Projede ayrıca aşağıdaki kazanımlar amaçlanmıştır:
+---
 
-- Mikroservis mantığına uygun servis ayrımı yapmak
-- Her servisin kendi veri tabanını kullanmasını sağlamak
-- Dispatcher üzerinden yönlendirme ve güvenlik kontrolü gerçekleştirmek
-- Sistemi Docker Compose ile tek komutta ayağa kaldırmak
-- Gerçek sistem trafiğini gözlemlemek
-- Yük altında sistem performansını ölçmek
-## 3. Senaryo Tanımı
+4. KULLANILAN TEKNOLOJİLER
 
-Projede örnek uygulama olarak bir kütüphane yönetim sistemi seçilmiştir. Bu sistemde kullanıcılar sisteme giriş yapabilmekte, kitapları görüntüleyebilmekte ve uygun durumdaki kitapları ödünç alabilmektedir. Yönetici yetkisine sahip kullanıcılar ise kitap ekleme, güncelleme ve silme işlemlerini gerçekleştirebilmektedir.
+```md
+## Kullanılan Teknolojiler
 
-Senaryoda sistem aşağıdaki servislerden oluşmaktadır:
+- Python (FastAPI)
+- MongoDB
+- Redis
+- Docker & Docker Compose
+- Prometheus
+- Grafana
+- Loki & Promtail
+- k6 (Load Testing)
 
-- **Auth Service:** Kullanıcı doğrulama ve token işlemlerini yürütür.
-- **Book Service:** Kitap kayıtlarını, stok bilgisini ve kitap detaylarını yönetir.
-- **Borrow Service:** Ödünç alma, iade ve kullanıcı-kitap ilişki verilerini yönetir.
-- **Dispatcher:** Tüm istemci isteklerini karşılar, doğrulama ve yönlendirme işlemlerini gerçekleştirir.
-## 4. Gereksinimlere Uygunluk
+## Sistem İzleme ve Loglama
 
-Sistem, proje dokümanında belirtilen gereksinimlere uygun olacak şekilde; bir dispatcher, bir auth servisi ve en az iki mikroservisten oluşacak biçimde geliştirilmiştir. Servisler birbirinden bağımsız çalışmakta, her biri kendi veri tabanı bağlantısına sahip olmakta ve tüm dış trafik dispatcher üzerinden yönlendirilmektedir. Ayrıca sistem Docker Compose ile tek komutla ayağa kaldırılabilmektedir. :contentReference[oaicite:1]{index=1} :contentReference[oaicite:2]{index=2}
+Sistem üzerinde çalışan dispatcher servisinden Prometheus metrikleri toplanmış ve Grafana ile görselleştirilmiştir.
+
+Ayrıca container logları Promtail aracılığıyla toplanarak Loki üzerinde saklanmış ve Grafana üzerinden tablo formatında görüntülenmiştir.
+
+## Görseller
+
+### Grafana - İstek Grafiği
+![Grafana](images/grafana.png)
+
+<img width="4<img width="794" height="400" alt="loki" src="https://github.com/user-attachments/assets/f0b2b49a-beb6-4f6c-bdb3-40ea0967b756" />
+95" height="632" alt="yük altında istek oranı" src="https://github.com/user-attachments/assets/ddfaa773-cd70-488f-9b58-5bcdfc409627" />
+
+### Loki - Log Tablosu
+![Loki](images/loki.png)
+
+## Performans ve Yük Testi
+
+Sistem k6 aracı kullanılarak test edilmiştir. Test sırasında kullanıcı sayısı kademeli olarak artırılmıştır.
+
+- Toplam istek: ~14,000
+- Ortalama yanıt süresi: ~240 ms
+- Hata oranı: %0.00
+
+Yapılan testlerde sistemin yüksek yük altında stabil çalıştığı gözlemlenmiştir.
+
+
+
+
+
