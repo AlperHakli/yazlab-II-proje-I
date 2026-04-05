@@ -28,9 +28,8 @@ graph TD
 ---
 
 
-4. KULLANILAN TEKNOLOJİLER
 
-```md
+
 ## Kullanılan Teknolojiler
 
 - Python (FastAPI)
