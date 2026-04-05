@@ -50,7 +50,8 @@ Ayrıca container logları Promtail aracılığıyla toplanarak Loki üzerinde s
 ### Grafana - İstek Grafiği
 ![Grafana](images/grafana.png)
 
-![WhatsApp Image 2026-04-05 at 17 38 44](https://github.com/user-attachments/assets/297e1783-63b8-4b12-83b7-c42ea1961e65)
+![logimage](https://github.com/user-attachments/assets/84550ce4-8df3-4800-996b-3b9c4658fe5d)
+
 
 
 ### Loki - Log Tablosu
