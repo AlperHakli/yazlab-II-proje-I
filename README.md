@@ -2,7 +2,7 @@
 
 Bu proje, mikroservis mimarisi kullanılarak geliştirilmiş bir kütüphane yönetim sistemidir. Sistem; kullanıcı doğrulama, kitap yönetimi, ödünç alma işlemleri ve merkezi dispatcher servisi içermektedir.
 
-## 1. Sistem Mimarisi
+## Sistem Mimarisi
 
 ```mermaid
 graph TD
