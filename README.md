@@ -50,14 +50,14 @@ Ayrıca container logları Promtail aracılığıyla toplanarak Loki üzerinde s
 ## Görseller
 
 ### Grafana - İstek Grafiği
-![Grafana](images/grafana.png)
 
-![logimage](https://github.com/user-attachments/assets/84550ce4-8df3-4800-996b-3b9c4658fe5d)
+![graphimage](https://github.com/user-attachments/assets/39e98252-f36e-4e38-bc0f-5936a29bbd79)
 
 
 
 ### Loki - Log Tablosu
-![Loki](images/loki.png)
+
+![logimage](https://github.com/user-attachments/assets/7499d1f2-9274-4a5f-9a28-8290c4729031)
 
 ## Performans ve Yük Testi
 
